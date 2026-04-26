@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>the seal api</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      font-family: 'Nunito', sans-serif;
+    }
+    .app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 2rem 1rem;
+    }
+    .title {
+      font-size: 30px;
+      font-weight: 600;
+      color: #ffffff;
+      text-align: center;
+      letter-spacing: -0.3px;
+      opacity: 0;
+      transform: translateY(-18px);
+      animation: fadeDown 0.7s ease 0.1s forwards;
+    }
+    .sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: #888;
+      margin-top: 5px;
+      text-align: center;
+      letter-spacing: 0.08em;
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: fadeDown 0.7s ease 0.3s forwards;
+    }
+    .frame {
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      border: 0.5px solid #e0e0e0;
+      overflow: hidden;
+      background: #f0f0ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.95) translateY(12px);
+      animation: frameIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;
+    }
+    .frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.5s ease;
+    }
+    .caption {
+      font-size: 12px;
+      font-weight: 300;
+      color: #888;
+      min-height: 16px;
+      text-align: center;
+      letter-spacing: 0.06em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1s forwards;
+    }
+    .btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      background: #111;
+      border: 0.5px solid #444;
+      border-radius: 8px;
+      padding: 10px 28px;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.1s forwards;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:hover { background: #222; }
+    .btn:active { transform: scale(0.97); }
+    @keyframes fadeDown { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp   { to { opacity: 1; transform: translateY(0); } }
+    @keyframes frameIn  { to { opacity: 1; transform: scale(1) translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div>
+      <div class="title">the seal api</div>
+      <div class="sub">random seal images on demand</div>
+    </div>
+    <div class="frame"><img id="img" alt="a seal" /></div>
+    <div class="caption" id="cap">loading...</div>
+    <button class="btn" onclick="next()">new seal ↺</button>
+  </div>
+
+  <script>
+    const seals = [
+      ["https://live.staticflickr.com/3085/2852254898_47d98f2f0a_b.jpg", "harbour seal"],
+      ["https://live.staticflickr.com/7377/9660614019_9e7d04a225_b.jpg", "grey seal"],
+      ["https://live.staticflickr.com/7211/7175958641_ea7e4ceaf9_b.jpg", "elephant seal"],
+      ["https://live.staticflickr.com/5538/9485531568_6f1e7a2c75_b.jpg", "leopard seal"],
+      ["https://live.staticflickr.com/3931/15361617756_b5e0e92f1b_b.jpg", "harp seal pup"],
+      ["https://live.staticflickr.com/1524/26506310553_48e1f2ca17_b.jpg", "weddell seal"],
+      ["https://live.staticflickr.com/8069/8218124580_e81a3e1ed4_b.jpg", "fur seal"],
+      ["https://live.staticflickr.com/7378/9321870895_5c08f04a93_b.jpg", "ringed seal"],
+    ];
+    let last = -1;
+    function next() {
+      const img = document.getElementById('img');
+      const cap = document.getElementById('cap');
+      img.style.opacity = 0;
+      cap.textContent = 'loading...';
+      let i;
+      do { i = Math.floor(Math.random() * seals.length); } while (i === last && seals.length > 1);
+      last = i;
+      const t = new Image();
+      t.onload = () => { img.src = t.src; img.style.opacity = 1; cap.textContent = seals[i][1]; };
+      t.onerror = () => { cap.textContent = 'seal escaped — try again'; };
+      t.src = seals[i][0];
+    }
+    next();
+  </script>
+</body>
+</html>
