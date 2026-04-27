@@ -4,7 +4,7 @@ A simple, beautiful webpage that displays a random seal image every time you vis
 
 ## Demo
 
-Live at: `https://seal.github.io`
+Live at: `sealapi.github.io/api/`
 
 ## features
 
